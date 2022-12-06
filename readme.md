@@ -1,3 +1,5 @@
+## run redis on port 6379
+
 ## run producer
 
 ```
