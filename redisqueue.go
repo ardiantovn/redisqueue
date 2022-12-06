@@ -28,14 +28,17 @@ var MainQueue = QueueFactory.RegisterQueue(&taskq.QueueOptions{
 	Redis: Redis, // go-redis client
 })
 
+// Create handler
+func HandlePrint(c context.Context, message string) error {
+	// Process message here
+	log.Println(message)
+	return nil
+}
+
 // Register a task.
 var HelloTask = taskq.RegisterTask(&taskq.TaskOptions{
-	Name: "hello",
-	Handler: func(c context.Context, message string) error {
-		// Proses pesan di sini
-		log.Println(message)
-		return nil
-	},
+	Name:    "hello",
+	Handler: HandlePrint,
 })
 
 func Produce(data map[string]string) {
@@ -43,7 +46,7 @@ func Produce(data map[string]string) {
 
 	ctx := context.Background()
 
-	// Mengubah data ke dalam bentuk JSON
+	// Convert data to JSON
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		log.Fatal(err)
@@ -65,13 +68,13 @@ func Consume() {
 
 	c := context.Background()
 
-	// Memulai konsumer untuk antrian
+	// Start consuming
 	err := QueueFactory.StartConsumers(c)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Menunggu sinyal untuk menghentikan program
+	// Waiting for signal to stop program
 	sig := WaitSignal()
 	log.Println(sig.String())
 
