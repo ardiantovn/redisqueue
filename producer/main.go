@@ -6,5 +6,6 @@ import (
 
 func main() {
 	// Call the produce function in producer.go
-	redisqueue.Produce()
+	data := map[string]string{"message": "hello"}
+	redisqueue.Produce(data)
 }

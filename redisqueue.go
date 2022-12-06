@@ -38,13 +38,12 @@ var HelloTask = taskq.RegisterTask(&taskq.TaskOptions{
 	},
 })
 
-func Produce() {
+func Produce(data map[string]string) {
 	flag.Parse()
 
 	ctx := context.Background()
 
 	// Mengubah data ke dalam bentuk JSON
-	data := map[string]string{"message": "hello"}
 	jsonData, err := json.Marshal(data)
 	if err != nil {
 		log.Fatal(err)
