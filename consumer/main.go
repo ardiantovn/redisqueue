@@ -6,8 +6,8 @@ import (
 
 func main() {
 	// Create instance of RedisQueue
-	redisQueue := redisqueue.NewRedisQueue("api-worker")
+	redisQueue1 := redisqueue.NewRedisQueue("worker1")
 
 	// Consume everything from "TaskName" with HandlerFunc
-	redisQueue.Consume("hello", redisqueue.HandlePrint)
+	redisQueue1.Consume("hello", redisqueue.HandlePrint)
 }
