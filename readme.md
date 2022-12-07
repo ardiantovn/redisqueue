@@ -1,4 +1,6 @@
 This repo contains an example to use [vmihailenco/taskq/v3](github.com/vmihailenco/taskq/v3).
+
+# QuickStart
 ## run redis on port 6379
 
 ## run producer1
@@ -25,7 +27,7 @@ go run producer2/main.go
 go run consumer2/main.go
 ```
 
-## Note
+# Note
 1. If you create 2 producers with same workers name and different topic name,
 
 example:
