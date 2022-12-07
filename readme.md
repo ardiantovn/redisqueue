@@ -77,7 +77,7 @@ and you enable `consumer1/main.go` and `consumer2/main.go` respectively. The mes
 consumed by `consumer1/main.go`. If you disable `consumer1/main.go`, then the message will be
 consumed by `consumer2/main.go`.
 
-3. If you create two producers with different worker namea and same topic name
+3. If you create two producers with different worker names and same topic name
 
 example:
 
