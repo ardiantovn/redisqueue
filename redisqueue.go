@@ -51,13 +51,7 @@ func (r *RedisQueue) HandlePrint(c context.Context, message string) error {
 	return nil
 }
 
-// Register a task.
-var HelloTask = taskq.RegisterTask(&taskq.TaskOptions{
-	Name:    "hello",
-	Handler: NewRedisQueue().HandlePrint,
-})
-
-func (r *RedisQueue) Produce(data map[string]string) {
+func (r *RedisQueue) Produce(TaskName string, data map[string]string) {
 	flag.Parse()
 
 	ctx := context.Background()
@@ -68,22 +62,35 @@ func (r *RedisQueue) Produce(data map[string]string) {
 		log.Fatal(err)
 	}
 
+	// Register a task.
+	var TaskInstance = taskq.RegisterTask(&taskq.TaskOptions{
+		Name:    TaskName,
+		Handler: r.HandlePrint,
+	})
+
 	// Start producing
 	for {
 		// Call the task with JSON data
-		err := r.MainQueue.Add(HelloTask.WithArgs(ctx, jsonData))
+		err := r.MainQueue.Add(TaskInstance.WithArgs(ctx, jsonData))
 		if err != nil {
 			log.Fatal(err)
+		} else {
 			log.Println(data)
 		}
 		time.Sleep(time.Second)
 	}
 }
 
-func (r *RedisQueue) Consume() {
+func (r *RedisQueue) Consume(TaskName string) {
 	flag.Parse()
 
 	c := context.Background()
+
+	// Register a task.
+	taskq.RegisterTask(&taskq.TaskOptions{
+		Name:    TaskName,
+		Handler: r.HandlePrint,
+	})
 
 	// Start consuming
 	err := r.QueueFactory.StartConsumers(c)

@@ -10,5 +10,5 @@ func main() {
 
 	// Call the produce function in producer.go
 	data := map[string]string{"message": "hello"}
-	redisQueue.Produce(data)
+	redisQueue.Produce("hello", data)
 }

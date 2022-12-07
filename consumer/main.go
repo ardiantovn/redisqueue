@@ -8,6 +8,6 @@ func main() {
 	// Create instance of RedisQueue
 	redisQueue := redisqueue.NewRedisQueue()
 
-	// Consume
-	redisQueue.Consume()
+	// Call the produce function in producer.go
+	redisQueue.Consume("hello")
 }
