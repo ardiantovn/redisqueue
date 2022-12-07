@@ -31,19 +31,19 @@ go run consumer2/main.go
 example:
 
 ```
--> producer1/main.go
+-> on `producer1/main.go`
 workerName= "worker1"
 topicName= "topic1"
 
--> producer2/main.go
+-> on `producer2/main.go`
 workerName= "worker1"
 topicName= "topic2"
 
--> consumer1/main.go
+-> on `consumer1/main.go`
 workerName= "worker1"
 topicName= "topic1"
 
--> consumer2/main.go
+-> on `consumer2/main.go`
 workerName= "worker1"
 topicName= "topic2"
 ```
@@ -55,27 +55,60 @@ a consumer (suppose that you only enable `consumer1/main.go`), then you will get
 taskq: 2022/12/07 11:45:00 consumer.go:616: task="topic2" failed (will retry=1 in dur=30s): taskq: unknown task="topic2"
 ```
 
-2. If you create a producer and 2 consumers.
+2. If you create a producer and 2 consumers
 
 example:
 
 ```
--> producer1/main.go
+-> on `producer1/main.go`
 workerName= "worker1"
 topicName= "topic1"
 
--> consumer1/main.go
+-> on `consumer1/main.go`
 workerName= "worker1"
 topicName= "topic1"
 
--> consumer2/main.go
+-> on `consumer2/main.go`
 workerName= "worker1"
 topicName= "topic1"
 ```
 
-and you enable `consumer1/main.go` and `consumer2/main.go` respectively. The message will only
-consumed by `consumer1/main.go`. If you disable `consumer1/main.go`, then the message will
+and you enable `consumer1/main.go` and `consumer2/main.go` respectively. The message will be only
+consumed by `consumer1/main.go`. If you disable `consumer1/main.go`, then the message will be
 consumed by `consumer2/main.go`.
+
+3. If you create two producer with different workerName and same topic name
+
+example:
+
+```
+-> on `producer1/main.go`
+workerName= "worker1"
+topicName= "topic1"
+
+-> on `producer2/main.go`
+workerName= "worker2"
+topicName= "topic1"
+
+-> on `consumer1/main.go`
+workerName= "worker1"
+topicName= "topic1"
+
+-> on `consumer2/main.go`
+workerName= "worker2"
+topicName= "topic1"
+```
+
+then you will get
+
+```
+-> on consumer1/main.go
+{"message":"hello"}
+
+-> on consumer2/main.go
+{"message":"good bye"}
+```
+
 
 
 
