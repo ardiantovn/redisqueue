@@ -48,7 +48,7 @@ workerName= "worker1"
 topicName= "topic2"
 ```
 
-then you have to enable two consumers at the same time. If you only enable
+then you will have to enable two consumers at the same time. If you only enable
 a consumer (suppose that you only enable `consumer1/main.go`), then you will get this error message:
 
 ```
@@ -77,7 +77,7 @@ and you enable `consumer1/main.go` and `consumer2/main.go` respectively. The mes
 consumed by `consumer1/main.go`. If you disable `consumer1/main.go`, then the message will be
 consumed by `consumer2/main.go`.
 
-3. If you create two producer with different workerName and same topic name
+3. If you create two producers with different worker namea and same topic name
 
 example:
 
@@ -99,7 +99,7 @@ workerName= "worker2"
 topicName= "topic1"
 ```
 
-then you will get
+then you will get the following output
 
 ```
 -> on `consumer1/main.go`
