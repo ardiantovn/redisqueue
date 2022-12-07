@@ -19,7 +19,6 @@ type RedisQueue struct {
 	Redis        *redis.Client
 	QueueFactory taskq.Factory
 	MainQueue    taskq.Queue
-	TaskInstance taskq.Task
 }
 
 func NewRedisQueue(QueueName string) *RedisQueue {
@@ -78,8 +77,6 @@ func (r *RedisQueue) Produce(TaskName string, HandlerFunc interface{}, data map[
 		err := r.MainQueue.Add(TaskInstance.WithArgs(ctx, jsonData))
 		if err != nil {
 			log.Fatal(err)
-		} else {
-			log.Println(data)
 		}
 		time.Sleep(time.Second)
 	}
