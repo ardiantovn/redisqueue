@@ -49,7 +49,7 @@ topicName= "topic2"
 ```
 
 then you have to enable two consumers at the same time. If you only enable
-a consumer, then you will get this error message:
+a consumer (suppose that you only enable `consumer1/main.go`), then you will get this error message:
 
 ```
 taskq: 2022/12/07 11:45:00 consumer.go:616: task="topic2" failed (will retry=1 in dur=30s): taskq: unknown task="topic2"
