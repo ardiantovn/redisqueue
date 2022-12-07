@@ -1,4 +1,4 @@
-This repo contains an example to use [vmihailenco/taskq/v3](github.com/vmihailenco/taskq/v3).
+This repo contains an example to use a golang asynchronous task/job queue with Redis library ([vmihailenco/taskq/v3](https://github.com/vmihailenco/taskq)).
 
 # QuickStart
 ## run redis on port 6379
