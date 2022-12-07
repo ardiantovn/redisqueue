@@ -44,14 +44,18 @@ func NewRedisQueue(QueueName string) *RedisQueue {
 	}
 }
 
+type HandlerInterface interface {
+	HandlePrint()
+}
+
 // Create handler
-func (r *RedisQueue) HandlePrint(c context.Context, message string) error {
+func HandlePrint(c context.Context, message string) error {
 	// Process message here
 	log.Println(message)
 	return nil
 }
 
-func (r *RedisQueue) Produce(TaskName string, data map[string]string) {
+func (r *RedisQueue) Produce(TaskName string, HandlerFunc interface{}, data map[string]string) {
 	flag.Parse()
 
 	ctx := context.Background()
@@ -65,7 +69,7 @@ func (r *RedisQueue) Produce(TaskName string, data map[string]string) {
 	// Register a task.
 	var TaskInstance = taskq.RegisterTask(&taskq.TaskOptions{
 		Name:    TaskName,
-		Handler: r.HandlePrint,
+		Handler: HandlerFunc,
 	})
 
 	// Start producing
@@ -81,7 +85,7 @@ func (r *RedisQueue) Produce(TaskName string, data map[string]string) {
 	}
 }
 
-func (r *RedisQueue) Consume(TaskName string) {
+func (r *RedisQueue) Consume(TaskName string, HandlerFunc interface{}) {
 	flag.Parse()
 
 	c := context.Background()
@@ -89,7 +93,7 @@ func (r *RedisQueue) Consume(TaskName string) {
 	// Register a task.
 	taskq.RegisterTask(&taskq.TaskOptions{
 		Name:    TaskName,
-		Handler: r.HandlePrint,
+		Handler: HandlerFunc,
 	})
 
 	// Start consuming

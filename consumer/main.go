@@ -9,5 +9,5 @@ func main() {
 	redisQueue := redisqueue.NewRedisQueue("api-worker")
 
 	// Call the produce function in producer.go
-	redisQueue.Consume("hello")
+	redisQueue.Consume("hello", redisqueue.HandlePrint)
 }
