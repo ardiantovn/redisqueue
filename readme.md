@@ -26,7 +26,7 @@ go run consumer2/main.go
 ```
 
 ## Note
-If you create 2 producers with same workers name and different topic name,
+1. If you create 2 producers with same workers name and different topic name,
 
 example:
 
@@ -38,6 +38,14 @@ topicName= "topic1"
 -> producer2/main.go
 workerName= "worker1"
 topicName= "topic2"
+
+-> consumer1/main.go
+workerName= "worker1"
+topicName= "topic1"
+
+-> consumer2/main.go
+workerName= "worker1"
+topicName= "topic2"
 ```
 
 then you have to enable two consumers at the same time. If you only enable
@@ -46,6 +54,28 @@ a consumer, then you will get this error message:
 ```
 taskq: 2022/12/07 11:45:00 consumer.go:616: task="topic2" failed (will retry=1 in dur=30s): taskq: unknown task="topic2"
 ```
+
+2. If you create a producer and 2 consumers.
+
+example:
+
+```
+-> producer1/main.go
+workerName= "worker1"
+topicName= "topic1"
+
+-> consumer1/main.go
+workerName= "worker1"
+topicName= "topic1"
+
+-> consumer2/main.go
+workerName= "worker1"
+topicName= "topic1"
+```
+
+and you enable `consumer1/main.go` and `consumer2/main.go` respectively. The message will only
+consumed by `consumer1/main.go`. If you disable `consumer1/main.go`, then the message will
+consumed by `consumer2/main.go`.
 
 
 
