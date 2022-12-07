@@ -15,21 +15,37 @@ import (
 	"github.com/vmihailenco/taskq/v3/redisq"
 )
 
-var Redis = redis.NewClient(&redis.Options{
-	Addr: ":6379",
-})
+type RedisQueue struct {
+	Redis        *redis.Client
+	QueueFactory taskq.Factory
+	MainQueue    taskq.Queue
+	TaskInstance taskq.Task
+}
 
-// Create a queue factory.
-var QueueFactory = redisq.NewFactory()
+func NewRedisQueue() *RedisQueue {
+	// Create a redis client
+	redis := redis.NewClient(&redis.Options{
+		Addr: ":6379",
+	})
 
-// Create a queue.
-var MainQueue = QueueFactory.RegisterQueue(&taskq.QueueOptions{
-	Name:  "api-worker",
-	Redis: Redis, // go-redis client
-})
+	// Create a queue factory
+	queueFactory := redisq.NewFactory()
+
+	// Create a queue
+	mainQueue := queueFactory.RegisterQueue(&taskq.QueueOptions{
+		Name:  "api-worker",
+		Redis: redis, // go-redis client
+	})
+
+	return &RedisQueue{
+		Redis:        redis,
+		QueueFactory: queueFactory,
+		MainQueue:    mainQueue,
+	}
+}
 
 // Create handler
-func HandlePrint(c context.Context, message string) error {
+func (r *RedisQueue) HandlePrint(c context.Context, message string) error {
 	// Process message here
 	log.Println(message)
 	return nil
@@ -38,10 +54,10 @@ func HandlePrint(c context.Context, message string) error {
 // Register a task.
 var HelloTask = taskq.RegisterTask(&taskq.TaskOptions{
 	Name:    "hello",
-	Handler: HandlePrint,
+	Handler: NewRedisQueue().HandlePrint,
 })
 
-func Produce(data map[string]string) {
+func (r *RedisQueue) Produce(data map[string]string) {
 	flag.Parse()
 
 	ctx := context.Background()
@@ -55,36 +71,37 @@ func Produce(data map[string]string) {
 	// Start producing
 	for {
 		// Call the task with JSON data
-		err := MainQueue.Add(HelloTask.WithArgs(ctx, jsonData))
+		err := r.MainQueue.Add(HelloTask.WithArgs(ctx, jsonData))
 		if err != nil {
 			log.Fatal(err)
+			log.Println(data)
 		}
 		time.Sleep(time.Second)
 	}
 }
 
-func Consume() {
+func (r *RedisQueue) Consume() {
 	flag.Parse()
 
 	c := context.Background()
 
 	// Start consuming
-	err := QueueFactory.StartConsumers(c)
+	err := r.QueueFactory.StartConsumers(c)
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	// Waiting for signal to stop program
-	sig := WaitSignal()
+	sig := r.WaitSignal()
 	log.Println(sig.String())
 
-	err = QueueFactory.Close()
+	err = r.QueueFactory.Close()
 	if err != nil {
 		log.Fatal(err)
 	}
 }
 
-func WaitSignal() os.Signal {
+func (r *RedisQueue) WaitSignal() os.Signal {
 	ch := make(chan os.Signal, 2)
 	signal.Notify(
 		ch,

@@ -5,6 +5,9 @@ import (
 )
 
 func main() {
-	// Call the produce function in producer.go
-	redisqueue.Consume()
+	// Create instance of RedisQueue
+	redisQueue := redisqueue.NewRedisQueue()
+
+	// Consume
+	redisQueue.Consume()
 }

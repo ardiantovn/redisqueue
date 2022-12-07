@@ -5,7 +5,10 @@ import (
 )
 
 func main() {
+	// Create instance of RedisQueue
+	redisQueue := redisqueue.NewRedisQueue()
+
 	// Call the produce function in producer.go
 	data := map[string]string{"message": "hello"}
-	redisqueue.Produce(data)
+	redisQueue.Produce(data)
 }
