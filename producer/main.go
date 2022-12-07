@@ -10,5 +10,5 @@ func main() {
 
 	// Produce "data" into "TaskName" with HandlerFunc
 	data := map[string]string{"message": "hello"}
-	redisQueue.Produce("hello", redisqueue.HandlePrint, data)
+	redisQueue.Produce("topic1", redisqueue.HandlePrint, data)
 }

@@ -9,5 +9,5 @@ func main() {
 	redisQueue1 := redisqueue.NewRedisQueue("worker1")
 
 	// Consume everything from "TaskName" with HandlerFunc
-	redisQueue1.Consume("hello", redisqueue.HandlePrint)
+	redisQueue1.Consume("topic1", redisqueue.HandlePrint)
 }
