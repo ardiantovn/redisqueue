@@ -6,7 +6,7 @@ import (
 
 func main() {
 	// Create instance of RedisQueue
-	redisQueue := redisqueue.NewRedisQueue()
+	redisQueue := redisqueue.NewRedisQueue("api-worker")
 
 	// Call the produce function in producer.go
 	data := map[string]string{"message": "hello"}

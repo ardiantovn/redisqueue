@@ -22,7 +22,7 @@ type RedisQueue struct {
 	TaskInstance taskq.Task
 }
 
-func NewRedisQueue() *RedisQueue {
+func NewRedisQueue(QueueName string) *RedisQueue {
 	// Create a redis client
 	redis := redis.NewClient(&redis.Options{
 		Addr: ":6379",
@@ -33,7 +33,7 @@ func NewRedisQueue() *RedisQueue {
 
 	// Create a queue
 	mainQueue := queueFactory.RegisterQueue(&taskq.QueueOptions{
-		Name:  "api-worker",
+		Name:  QueueName,
 		Redis: redis, // go-redis client
 	})
 
