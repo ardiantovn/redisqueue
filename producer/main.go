@@ -8,7 +8,7 @@ func main() {
 	// Create instance of RedisQueue
 	redisQueue := redisqueue.NewRedisQueue("api-worker")
 
-	// Call the produce function in producer.go
+	// Produce "data" into "TaskName" with HandlerFunc
 	data := map[string]string{"message": "hello"}
 	redisQueue.Produce("hello", redisqueue.HandlePrint, data)
 }

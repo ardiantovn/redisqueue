@@ -8,6 +8,6 @@ func main() {
 	// Create instance of RedisQueue
 	redisQueue := redisqueue.NewRedisQueue("api-worker")
 
-	// Call the produce function in producer.go
+	// Consume everything from "TaskName" with HandlerFunc
 	redisQueue.Consume("hello", redisqueue.HandlePrint)
 }
