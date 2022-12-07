@@ -102,10 +102,10 @@ topicName= "topic1"
 then you will get
 
 ```
--> on consumer1/main.go
+-> on `consumer1/main.go`
 {"message":"hello"}
 
--> on consumer2/main.go
+-> on `consumer2/main.go`
 {"message":"good bye"}
 ```
 
